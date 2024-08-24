@@ -1,4 +1,4 @@
-# lab1
+# All lab in FLutter_VKU
 
 A new Flutter project.
 
