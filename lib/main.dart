@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,92 +14,62 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MiCartScreen(),
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.redAccent,
+          centerTitle: true,
+          title: Text(
+            'Dice',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: Container(
+          decoration: BoxDecoration(color: Colors.red),
+          child: DiceScreen(),
+        ),
+      ),
     );
   }
 }
 
-class MiCartScreen extends StatefulWidget {
-  const MiCartScreen({super.key});
+class DiceScreen extends StatefulWidget {
+  const DiceScreen({super.key});
 
   @override
-  State<MiCartScreen> createState() => _MiCartScreenState();
+  State<DiceScreen> createState() => _DiceScreenState();
 }
 
-class _MiCartScreenState extends State<MiCartScreen> {
+class _DiceScreenState extends State<DiceScreen> {
+  int leftDiceNumber = 1;
+  int rightDiceNumber = 1;
+
+  void changeDiceFaceRandom() {
+    setState(() {
+      leftDiceNumber = Random().nextInt(6) + 1;
+      rightDiceNumber = Random().nextInt(6) + 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.teal,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage('images/me_sv.jpg'),
-            ),
-            Text(
-              "Nguyen Vinh",
-              style: TextStyle(
-                  fontFamily: 'Pacifico',
-                  fontSize: 40,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Flutter Developer",
-              style: TextStyle(
-                  fontFamily: 'Source Sans 3',
-                  fontSize: 20,
-                  letterSpacing: 2.5,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.teal.shade100),
-            ),
-            SizedBox(
-              height: 20,
-              width: 150,
-              child: Divider(
-                color: Colors.teal.shade100,
-              ),
-            ),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              child: ListTile(
-                leading: Icon(
-                  Icons.phone,
-                  color: Colors.teal,
-                ),
-                title: Text(
-                  '0839519415',
-                  style: TextStyle(
-                      fontFamily: 'Source Sans 3',
-                      fontSize: 20,
-                      color: Colors.teal.shade900),
-                ),
-              ),
-            ),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              child: ListTile(
-                leading: Icon(
-                  Icons.mail,
-                  color: Colors.teal,
-                ),
-                title: Text(
-                  'nguyennvv.21it@vku.udn.vn',
-                  style: TextStyle(
-                      fontFamily: 'Source Sans 3',
-                      fontSize: 20,
-                      color: Colors.teal.shade900),
-                ),
-              ),
-            )
-          ],
-        ),
+    return Center(
+      child: Row(
+        children: [
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.all(10),
+            child: GestureDetector(
+                onTap: changeDiceFaceRandom,
+                child: Image.asset('images/dice$leftDiceNumber.png')),
+          )),
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.all(10),
+            child: GestureDetector(
+                onTap: changeDiceFaceRandom,
+                child: Image.asset('images/dice$rightDiceNumber.png')),
+          )),
+        ],
       ),
     );
   }
