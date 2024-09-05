@@ -16,15 +16,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.blue,
           centerTitle: true,
           title: Text(
-            'Dice',
+            'Ask Me Everything',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
         body: Container(
-          decoration: BoxDecoration(color: Colors.red),
+          decoration: BoxDecoration(color: Colors.blueAccent),
           child: DiceScreen(),
         ),
       ),
@@ -40,13 +40,11 @@ class DiceScreen extends StatefulWidget {
 }
 
 class _DiceScreenState extends State<DiceScreen> {
-  int leftDiceNumber = 1;
-  int rightDiceNumber = 1;
+  int ballFaceRandom = 1;
 
   void changeDiceFaceRandom() {
     setState(() {
-      leftDiceNumber = Random().nextInt(6) + 1;
-      rightDiceNumber = Random().nextInt(6) + 1;
+      ballFaceRandom = Random().nextInt(5) + 1;
     });
   }
 
@@ -60,14 +58,7 @@ class _DiceScreenState extends State<DiceScreen> {
             padding: EdgeInsets.all(10),
             child: GestureDetector(
                 onTap: changeDiceFaceRandom,
-                child: Image.asset('images/dice$leftDiceNumber.png')),
-          )),
-          Expanded(
-              child: Padding(
-            padding: EdgeInsets.all(10),
-            child: GestureDetector(
-                onTap: changeDiceFaceRandom,
-                child: Image.asset('images/dice$rightDiceNumber.png')),
+                child: Image.asset('images/ball$ballFaceRandom.png')),
           )),
         ],
       ),
