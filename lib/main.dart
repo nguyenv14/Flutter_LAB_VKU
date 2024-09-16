@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,63 +16,70 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.redAccent,
-          centerTitle: true,
-          title: Text(
-            'Dice',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ),
-        body: Container(
-          decoration: BoxDecoration(color: Colors.red),
-          child: DiceScreen(),
+      home: SafeArea(
+        child: Container(
+          child: XylophoneScreen(),
         ),
       ),
     );
   }
 }
 
-class DiceScreen extends StatefulWidget {
-  const DiceScreen({super.key});
+class XylophoneScreen extends StatefulWidget {
+  const XylophoneScreen({super.key});
 
   @override
-  State<DiceScreen> createState() => _DiceScreenState();
+  State<XylophoneScreen> createState() => _XylophoneScreenState();
 }
 
-class _DiceScreenState extends State<DiceScreen> {
-  int leftDiceNumber = 1;
-  int rightDiceNumber = 1;
+class _XylophoneScreenState extends State<XylophoneScreen> {
+  late AudioPlayer audioPlayer = AudioPlayer();
 
-  void changeDiceFaceRandom() {
-    setState(() {
-      leftDiceNumber = Random().nextInt(6) + 1;
-      rightDiceNumber = Random().nextInt(6) + 1;
-    });
+  int number = 1;
+
+  @override
+  void initState() {
+    audioPlayer = AudioPlayer();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void playSound(int $number) async {
+    await audioPlayer
+        .play(AssetSource('images/note' + $number.toString() + '.wav'));
+  }
+
+  Widget buttonXylophone(int number, Color colors) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          playSound(number);
+        },
+        child: Container(
+          decoration: BoxDecoration(color: colors),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        children: [
-          Expanded(
-              child: Padding(
-            padding: EdgeInsets.all(10),
-            child: GestureDetector(
-                onTap: changeDiceFaceRandom,
-                child: Image.asset('images/dice$leftDiceNumber.png')),
-          )),
-          Expanded(
-              child: Padding(
-            padding: EdgeInsets.all(10),
-            child: GestureDetector(
-                onTap: changeDiceFaceRandom,
-                child: Image.asset('images/dice$rightDiceNumber.png')),
-          )),
-        ],
-      ),
-    );
+    return SafeArea(
+        child: Column(
+      children: [
+        buttonXylophone(1, Colors.red),
+        buttonXylophone(2, Colors.orange),
+        buttonXylophone(3, Colors.yellow),
+        buttonXylophone(4, Colors.green),
+        buttonXylophone(5, Colors.greenAccent),
+        buttonXylophone(6, Colors.blue),
+        buttonXylophone(7, Colors.pink),
+      ],
+    ));
   }
 }
